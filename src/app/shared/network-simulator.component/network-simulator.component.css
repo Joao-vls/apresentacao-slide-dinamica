@@ -1,0 +1,317 @@
+/* Importando uma fonte forte e moderna para combinar com o slide */
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Roboto:wght@700&display=swap');
+
+.simulator-container {
+  display: flex;
+  flex-direction: column;
+  height: 800px;
+  background-color: #000000; /* Fundo preto puro do slide */
+  border: 2px solid #00509e;
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
+}
+
+/* BARRA DE FERRAMENTAS ESTILO "TECH" */
+.toolbar {
+  padding: 15px;
+  background-color: #050505; /* Preto levemente mais claro para destacar */
+  border-bottom: 2px solid #00509e;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.toolbar button {
+  padding: 12px 20px;
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #00a8ff; /* Borda azul elétrica */
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.15rem;
+  transition: all 0.2s;
+  box-shadow: 0 0 5px rgba(0, 168, 255, 0.3);
+  font-family: inherit;
+}
+
+.toolbar button:hover:not([disabled]) { 
+  background-color: #001a33; 
+  box-shadow: 0 0 15px rgba(0, 168, 255, 0.6);
+}
+
+.toolbar button[disabled] {
+  border-color: #333;
+  color: #666;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ÁREA DA REDE */
+.network-canvas {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  background-color: #000000; /* Fundo Preto */
+}
+
+.connections-layer {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; 
+}
+
+/* LINHAS AZUIS ESTILO CIRCUITO (Copiando a cor da sua imagem) */
+.network-cable {
+  stroke: #1e90ff; /* Azul royal brilhante */
+  stroke-width: 4;
+}
+
+.device-node {
+  position: absolute;
+  top: 0; left: 0;
+  width: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: grab;
+  z-index: 10;
+}
+
+.device-node:active {
+  cursor: grabbing;
+}
+
+/* ÍCONES DOS DISPOSITIVOS */
+.device-icon {
+  font-size: 4rem;
+  background: #050505; /* Fundo Escuro */
+  border: 2px solid #1e90ff; /* Borda Azul */
+  color: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(30, 144, 255, 0.3);
+  width: 80px; 
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* CAIXA DE TEXTO / EDIÇÃO */
+.device-info {
+  margin-top: 10px;
+  background: rgba(0, 0, 0, 0.85);
+  color: #ffffff; /* Texto branco como no slide */
+  padding: 8px 12px;
+  border: 1px solid #1e90ff; /* Borda da caixa de texto azul */
+  border-radius: 4px;
+  font-size: 1.15rem;
+  text-align: center;
+  white-space: pre-wrap; 
+  min-width: 120px;
+  line-height: 1.4;
+  font-weight: 700; /* Texto em negrito forte */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.8);
+  font-family: 'Oswald', 'Roboto', sans-serif; /* Título marcante */
+  letter-spacing: 1px;
+}
+
+.edit-textarea {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  background: transparent;
+  color: #00ffff;
+  border: none;
+  outline: none;
+  text-align: center;
+  font-size: 1.15rem;
+  font-family: inherit;
+  font-weight: bold;
+  
+  /* AQUI ESTÁ A MÁGICA: PERMITE PUXAR A CAIXA */
+  resize: both; 
+  overflow: auto;
+  
+  padding: 8px 12px; /* O padding original vem para cá durante a edição */
+  margin: 0;
+  line-height: 1.4;
+}
+
+
+/* PACOTE DE DADOS (PULSO DE INFORMAÇÃO) */
+.data-packet {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background-color: #ffffff; /* Bolinha branca super brilhante */
+  border-radius: 50%;
+  /* Brilho azul ciano simulando energia viajando pelo cabo */
+  box-shadow: 0 0 10px #ffffff, 0 0 20px #00ffff, 0 0 30px #1e90ff;
+  z-index: 20;
+  animation: movePacket 1s linear forwards; 
+}
+
+@keyframes movePacket {
+  0% { transform: translate(var(--start-x), var(--start-y)); opacity: 1; }
+  100% { transform: translate(var(--end-x), var(--end-y)); opacity: 1; }
+}
+
+/* ESTILOS DOS BOTÕES ESPECÍFICOS DE AÇÃO */
+.toolbar button.active-link-mode { 
+  background-color: #3b0000; 
+  border-color: #ff4757;
+  box-shadow: 0 0 10px rgba(255, 71, 87, 0.5);
+}
+.toolbar button.active-link-mode:hover { background-color: #660000; }
+
+.network-canvas.linking-mode .device-node { cursor: crosshair; }
+
+.device-node.selected-for-link .device-icon {
+  box-shadow: 0 0 0 4px #00ffff, 0 0 20px #00ffff; /* Brilho Cyan */
+  transform: scale(1.1);
+  transition: all 0.2s ease;
+  border-color: #ffffff;
+}
+
+.toolbar button.active-route-mode { 
+  background-color: #2c003e; 
+  border-color: #9b59b6; 
+  box-shadow: 0 0 10px rgba(155, 89, 182, 0.5);
+}
+.toolbar button.active-route-mode:hover { background-color: #4a0066; }
+
+.toolbar button.play-ping-btn {
+  background-color: #003311;
+  border-color: #2ecc71;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.6); }
+  70% { box-shadow: 0 0 0 12px rgba(46, 204, 113, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+}
+
+.network-canvas.routing-mode .device-node { cursor: copy; }
+
+/* BADGE (NÚMERO) DA ROTA */
+.route-badge {
+  position: absolute;
+  top: -5px; right: 5px;
+  background-color: #1e90ff; /* Fundo azul */
+  color: #000000; /* Texto preto para contrastar com o fundo azul claro */
+  width: 28px; height: 28px; 
+  border-radius: 50%;
+  display: flex;
+  align-items: center; justify-content: center;
+  font-weight: 900;
+  font-size: 16px;
+  z-index: 20;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 10px rgba(30, 144, 255, 0.8);
+}
+
+.device-node.in-route .device-icon {
+  box-shadow: 0 0 0 4px #1e90ff, 0 0 20px rgba(30, 144, 255, 0.6);
+}
+/* --- NOVO: Estilos do Save/Load --- */
+.save-load-controls {
+  display: flex;
+  gap: 12px;
+  margin-left: auto; /* Empurra os botões de salvar para o final da barra */
+  border-left: 2px solid #00509e;
+  padding-left: 15px;
+}
+
+.tech-select {
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #1e90ff;
+  border-radius: 4px;
+  padding: 10px 15px;
+  font-size: 1.15rem;
+  font-weight: bold;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 168, 255, 0.3);
+  transition: all 0.2s;
+}
+
+.tech-select:focus, .tech-select:hover:not([disabled]) {
+  box-shadow: 0 0 15px rgba(0, 168, 255, 0.6);
+  background-color: #001a33;
+}
+
+.tech-select[disabled] {
+  border-color: #333;
+  color: #666;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+/* ... Mantenha todo o início igual até chegar em .device-info ... */
+
+/* CAIXA DE TEXTO / EDIÇÃO */
+.device-info {
+  margin-top: 10px;
+  background: rgba(0, 0, 0, 0.85);
+  color: #ffffff;
+  padding: 8px 12px;
+  border: 1px solid #1e90ff;
+  border-radius: 4px;
+  font-size: 1.15rem;
+  text-align: center;
+  white-space: pre-wrap; 
+  min-width: 130px; /* Aumentado ligeiramente devido ao border-box */
+  line-height: 1.4;
+  font-weight: 700; 
+  box-shadow: 0 4px 8px rgba(0,0,0,0.8);
+  font-family: 'Oswald', 'Roboto', sans-serif; 
+  letter-spacing: 1px;
+  
+  /* NOVAS ADIÇÕES PARA O RESIZE FUNCIONAR BEM */
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tira o espaçamento para a textarea preencher tudo e o "puxador" ficar na ponta */
+.device-info.is-editing {
+  padding: 0;
+  display: block; 
+}
+/* --- NOVO: Estilos da Caixa de Texto de Observação --- */
+.toolbar button.btn-text {
+  background-color: #003344;
+  border-color: #00ffff;
+  color: #00ffff;
+}
+
+.toolbar button.btn-text:hover {
+  background-color: #005577;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+}
+
+/* Modificadores para quando o nó for apenas texto */
+.text-only-node {
+  width: auto; /* Deixa o contêiner abraçar o texto livremente */
+}
+
+.text-only-node .device-info {
+  margin-top: 0; /* Remove a margem superior já que não tem ícone */
+  background: rgba(0, 30, 60, 0.9); /* Fundo um pouco mais escuro/azulado */
+  border: 2px dashed #00ffff; /* Borda tracejada cyan estilo projeto/planta */
+  color: #00ffff; /* Texto azul claro */
+  box-shadow: 0 4px 15px rgba(0, 255, 255, 0.1);
+  min-width: 150px;
+}
+
+/* Deixa o texto em edição da anotação branco para contrastar no duplo clique */
+.text-only-node .edit-textarea {
+  color: #ffffff; 
+}

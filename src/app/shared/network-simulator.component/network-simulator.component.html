@@ -1,0 +1,107 @@
+<div class="simulator-container">
+  
+  <div class="toolbar">
+    <button (click)="addDevice('pc')" [disabled]="isPingRunning()">+ Add PC</button>
+    <button (click)="addDevice('phone')" [disabled]="isPingRunning()">+ Add Celular</button>
+    <button (click)="addDevice('switch')" [disabled]="isPingRunning()">+ Add Switch</button>
+    
+    <!-- NOVO: Botão de adicionar Caixa de Texto para Observações -->
+    <button (click)="addDevice('text')" [disabled]="isPingRunning()" class="btn-text">📝 Add Texto</button>
+    
+    <button (click)="toggleLinkMode()" [class.active-link-mode]="isLinkMode()" [disabled]="isPingRunning()">
+      {{ isLinkMode() ? '🔴 Cancelar Conexão' : '🔌 Ligar Cabos' }}
+    </button>
+    
+    <button (click)="toggleRoutingMode()" [class.active-route-mode]="isRoutingMode()" [disabled]="isPingRunning()">
+      {{ isRoutingMode() ? '🔴 Cancelar Rota' : '📍 Rota Ping' }}
+    </button>
+
+    @if (pingRoute().length > 1) {
+      <button class="play-ping-btn" (click)="runCustomPing()" [disabled]="isPingRunning()">
+        ▶️ Enviar ({{ pingRoute().length }})
+      </button>
+    }
+
+    <div class="save-load-controls">
+      <button (click)="saveCurrentSchema()" [disabled]="isPingRunning()">💾 Salvar</button>
+      
+      @if (savedNetworks().length > 0) {
+        <select (change)="loadSchema($event)" class="tech-select" [disabled]="isPingRunning()">
+          <option value="">📁 Carregar Layout...</option>
+          @for (schema of savedNetworks(); track schema.id) {
+            <option [value]="schema.id">{{ schema.name }}</option>
+          }
+        </select>
+      }
+    </div>
+
+  </div>
+
+  <div class="network-canvas" 
+       [class.linking-mode]="isLinkMode()" 
+       [class.routing-mode]="isRoutingMode()">
+    
+    <svg class="connections-layer" width="100%" height="100%">
+      @for (line of svgLinks(); track $index) {
+        <line 
+          [attr.x1]="line.x1" [attr.y1]="line.y1" 
+          [attr.x2]="line.x2" [attr.y2]="line.y2" 
+          class="network-cable" />
+      }
+    </svg>
+
+    @for (node of nodes(); track node.id) {
+      <div 
+        class="device-node" 
+        [class.text-only-node]="node.type === 'text'"
+        cdkDrag 
+        cdkDragBoundary=".network-canvas" 
+        [cdkDragFreeDragPosition]="{x: node.x, y: node.y}"
+        (cdkDragMoved)="onDragMoved($event, node)"
+        (cdkDragEnded)="onDragEnded($event, node)" 
+        (click)="handleNodeClick(node)"
+        [class.selected-for-link]="selectedNodeForLink() === node.id"
+        [class.in-route]="getRouteStep(node.id) > 0"
+      >
+        @if (getRouteStep(node.id) > 0) {
+          <div class="route-badge">{{ getRouteStep(node.id) }}</div>
+        }
+
+        <!-- ATUALIZADO: Oculta o ícone circular se for apenas um texto de observação -->
+        @if (node.type !== 'text') {
+          <div class="device-icon">{{ getIcon(node.type) }}</div>
+        }
+        
+        <div class="device-info" 
+             (dblclick)="openInlineEdit(node)"
+             [class.is-editing]="editingNodeId() === node.id"
+             [style.width.px]="node.boxWidth"
+             [style.height.px]="node.boxHeight">
+          
+          @if (editingNodeId() === node.id) {
+            <textarea 
+              [value]="node.info"
+              (blur)="saveInlineEdit(node, $event)"
+              (mousedown)="$event.stopPropagation()"
+              autofocus
+              class="edit-textarea"
+            ></textarea>
+          } @else {
+            {{ node.info }}
+          }
+          
+        </div>
+      </div>
+    }
+
+    @if (activePacket(); as packet) {
+      <div 
+        class="data-packet"
+        [style.--start-x.px]="packet.startX"
+        [style.--start-y.px]="packet.startY"
+        [style.--end-x.px]="packet.endX"
+        [style.--end-y.px]="packet.endY">
+      </div>
+    }
+  </div>
+</div>

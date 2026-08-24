@@ -1,0 +1,39 @@
+<div class="presentation-container">
+  
+  <!-- Área principal de exibição -->
+  <div class="slide-content">
+    @for (slide of slides; track $index) {
+      
+      @if (currentSlide() === $index) {
+        <div class="slide-wrapper fade-in">
+          
+          @if (slide.type === 'image') {
+            <!-- Slide de Imagem -->
+            <img [src]="slide.src" [alt]="slide.alt" class="slide-image">
+          } 
+          @else if (slide.type === 'simulator') {
+            <!-- Slide do Simulador (Nosso Componente!) -->
+            <app-network-simulator></app-network-simulator>
+          }
+
+        </div>
+      }
+
+    }
+  </div>
+
+  <!-- Controles clicáveis na tela (opcionais, caso não queira usar apenas o teclado) -->
+  <button class="nav-btn prev-btn" (click)="prevSlide()" [class.hidden]="currentSlide() === 0">
+    &#10094;
+  </button>
+  
+  <button class="nav-btn next-btn" (click)="nextSlide()" [class.hidden]="currentSlide() === slides.length - 1">
+    &#10095;
+  </button>
+
+  <!-- Indicador de página discreto -->
+  <div class="slide-indicator">
+    {{ currentSlide() + 1 }} / {{ slides.length }}
+  </div>
+
+</div>

@@ -1,1 +1,31 @@
 /* You can add global styles to this file, and also import other style files */
+body,html{
+    background-color: #000000;
+}
+:host {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+/* --- DEIXA O SCROLL TRANSPARENTE/INVISÍVEL --- */
+
+/* Para navegadores baseados em WebKit (Chrome, Edge, Safari, Opera) */
+::-webkit-scrollbar {
+  width: 0px; /* Esconde a barra vertical */
+  height: 0px; /* Esconde a barra horizontal */
+  background: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+/* Para o Firefox */
+* {
+  scrollbar-width: none;
+  scrollbar-color: transparent transparent;
+}

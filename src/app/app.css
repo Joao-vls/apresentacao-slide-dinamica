@@ -1,0 +1,22 @@
+/* --- DEIXA O SCROLL TRANSPARENTE/INVISÍVEL --- */
+
+/* Para navegadores baseados em WebKit (Chrome, Edge, Safari, Opera) */
+::-webkit-scrollbar {
+  width: 0px; /* Esconde a barra vertical */
+  height: 0px; /* Esconde a barra horizontal */
+  background: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+/* Para o Firefox */
+* {
+  scrollbar-width: none;
+  scrollbar-color: transparent transparent;
+}
