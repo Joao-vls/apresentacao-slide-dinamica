@@ -5,7 +5,9 @@
     <button (click)="addDevice('phone')" [disabled]="isPingRunning()">+ Add Celular</button>
     <button (click)="addDevice('switch')" [disabled]="isPingRunning()">+ Add Switch</button>
     
-    <!-- NOVO: Botão de adicionar Caixa de Texto para Observações -->
+    <!-- NOVO: Botão de adicionar Roteador -->
+    <button (click)="addDevice('router')" [disabled]="isPingRunning()">+ Add Router</button>
+    
     <button (click)="addDevice('text')" [disabled]="isPingRunning()" class="btn-text">📝 Add Texto</button>
     
     <button (click)="toggleLinkMode()" [class.active-link-mode]="isLinkMode()" [disabled]="isPingRunning()">
@@ -67,7 +69,6 @@
           <div class="route-badge">{{ getRouteStep(node.id) }}</div>
         }
 
-        <!-- ATUALIZADO: Oculta o ícone circular se for apenas um texto de observação -->
         @if (node.type !== 'text') {
           <div class="device-icon">{{ getIcon(node.type) }}</div>
         }
